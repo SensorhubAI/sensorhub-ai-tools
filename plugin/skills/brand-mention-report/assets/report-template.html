@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{BRAND_NAME}} - Brand Mentions Report - Last 30 Days</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #111418;
+    --ink-2: #3a3f47;
+    --ink-3: #6b7280;
+    --line: #e5e7eb;
+    --bg: #fafaf9;
+    --card: #ffffff;
+    --accent: #1f6e5e;
+    --accent-light: #d9eee7;
+    --warn: #b54708;
+    --warn-light: #fef0e6;
+    --danger: #b42318;
+    --positive: #1f6e5e;
+    --neutral: #6b7280;
+    --negative: #b42318;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container { max-width: 980px; margin: 0 auto; padding: 48px 32px 80px; }
+  .topbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 24px; border-bottom: 1px solid var(--line);
+    margin-bottom: 40px; font-size: 13px; color: var(--ink-3);
+  }
+  .brandmark { font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
+  .brandmark span { color: var(--accent); }
+  h1 { font-size: 38px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 700; margin-bottom: 12px; }
+  .subtitle { font-size: 16px; color: var(--ink-3); margin-bottom: 48px; }
+  .section { margin-bottom: 56px; }
+  .section-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-3); font-weight: 600; margin-bottom: 8px;
+  }
+  h2 { font-size: 24px; letter-spacing: -0.015em; font-weight: 700; margin-bottom: 20px; }
+  p { margin-bottom: 14px; color: var(--ink-2); }
+  .lede { font-size: 17px; color: var(--ink); margin-bottom: 28px; }
+
+  /* Exec snapshot */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px; }
+  .stat-num { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 12px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.04em; }
+  .stat-context { font-size: 12px; color: var(--ink-3); margin-top: 4px; }
+
+  /* Platform bars */
+  .bars { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 24px; }
+  .bar-row { display: grid; grid-template-columns: 100px 1fr 60px; align-items: center; gap: 16px; padding: 10px 0; }
+  .bar-row + .bar-row { border-top: 1px solid var(--line); }
+  .bar-label { font-weight: 600; font-size: 14px; }
+  .bar-track { background: var(--bg); border-radius: 4px; height: 22px; overflow: hidden; }
+  .bar-fill { background: var(--accent); height: 100%; border-radius: 4px; }
+  .bar-value { font-size: 14px; color: var(--ink-2); text-align: right; }
+
+  /* SOV map */
+  .sov-bar { background: var(--accent); }
+  .sov-bar.brand { background: var(--ink); }
+  .sov-note { font-size: 13px; color: var(--ink-3); margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); }
+
+  /* Intent grid */
+  .intent-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .intent-card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px; }
+  .intent-card.priority { background: var(--accent-light); border-color: var(--accent); }
+  .intent-name { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ink); margin-bottom: 8px; }
+  .intent-count { font-size: 28px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; margin-bottom: 12px; }
+  .intent-sentiment {
+    display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 12px;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 10px;
+  }
+  .sent-pos { background: var(--accent-light); color: var(--accent); }
+  .sent-neg { background: #fee4e2; color: var(--negative); }
+  .sent-neu { background: #f3f4f6; color: var(--neutral); }
+  .intent-threads { list-style: none; padding: 0; margin: 8px 0 0 0; border-top: 1px solid var(--line); }
+  .intent-card.priority .intent-threads { border-top-color: rgba(31, 110, 94, 0.2); }
+  .intent-threads li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.4; }
+  .intent-card.priority .intent-threads li { border-bottom-color: rgba(31, 110, 94, 0.2); }
+  .intent-threads li:last-child { border-bottom: none; padding-bottom: 0; }
+  .intent-threads a { color: var(--ink); text-decoration: none; display: block; margin-bottom: 4px; }
+  .intent-threads a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+  .intent-source { font-size: 10px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+  .intent-more { font-size: 11px; color: var(--ink-3); margin-top: 10px; font-style: italic; }
+
+  /* Action list */
+  .action-item { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-bottom: 12px; }
+  .action-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .tag { font-size: 11px; padding: 3px 8px; border-radius: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .tag-platform { background: #f3f4f6; color: var(--ink-2); }
+  .tag-intent { background: var(--accent-light); color: var(--accent); }
+  .tag-priority { background: var(--warn-light); color: var(--warn); }
+  .action-title { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 6px; line-height: 1.4; }
+  .action-title a { color: var(--ink); text-decoration: none; }
+  .action-title a:hover { text-decoration: underline; }
+  .action-snippet { font-size: 14px; color: var(--ink-2); margin-bottom: 10px; line-height: 1.5; }
+  .action-suggest { font-size: 13px; background: var(--bg); border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 0 6px 6px 0; color: var(--ink-2); }
+  .action-suggest strong { color: var(--ink); }
+
+  /* Event watch */
+  .event-card { background: var(--warn-light); border: 1px solid var(--warn); border-radius: 10px; padding: 24px; margin-bottom: 16px; }
+  .event-tag { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--warn); margin-bottom: 8px; }
+  .event-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .event-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(180, 71, 8, 0.2); }
+  .event-stat-num { font-size: 20px; font-weight: 700; color: var(--warn); }
+  .event-stat-label { font-size: 12px; color: var(--ink-2); }
+
+  /* Methodology */
+  .method-box { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 28px; font-size: 14px; color: var(--ink-2); }
+  .method-box h3 { font-size: 14px; color: var(--ink); margin-bottom: 6px; margin-top: 16px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .method-box h3:first-child { margin-top: 0; }
+  .method-box p { font-size: 14px; }
+
+  /* CTA */
+  .cta { background: var(--ink); color: white; border-radius: 10px; padding: 32px; margin-top: 40px; text-align: center; }
+  .cta h2 { color: white; margin-bottom: 8px; }
+  .cta p { color: rgba(255,255,255,0.75); margin-bottom: 20px; font-size: 15px; }
+  .cta-btn { display: inline-block; background: white; color: var(--ink); padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 15px; }
+
+  .footer { text-align: center; color: var(--ink-3); font-size: 12px; margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
+
+  @media (max-width: 720px) {
+    .container { padding: 32px 20px 60px; }
+    h1 { font-size: 28px; }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .intent-grid { grid-template-columns: 1fr; }
+    .event-stats { grid-template-columns: 1fr; }
+    .bar-row { grid-template-columns: 80px 1fr 50px; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="topbar">
+    <div class="brandmark">Powered by <span>Sensorhub</span></div>
+    <div>Report period: {{PERIOD_START}} - {{PERIOD_END}}</div>
+  </div>
+
+  <h1>{{BRAND_NAME}} brand mentions report</h1>
+  <div class="subtitle">A 30-day cross-platform read on how {{BRAND_NAME}} is being talked about across Reddit, LinkedIn, and X.</div>
+
+  <!-- SECTION 1: EXEC SNAPSHOT -->
+  <div class="section">
+    <div class="section-label">Section 1</div>
+    <h2>The 90-second read</h2>
+    <p class="lede">{{LEDE_PARAGRAPH}}</p>
+
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-num">{{TOTAL_MENTIONS}}</div>
+        <div class="stat-label">Total mentions</div>
+        <div class="stat-context">Last 30 days</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{{PLATFORM_COUNT}}</div>
+        <div class="stat-label">Platforms covered</div>
+        <div class="stat-context">{{PLATFORMS_TEXT}}</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{{TOP_COMPETITOR_COUNT}}</div>
+        <div class="stat-label">{{TOP_COMPETITOR_NAME}} co-mentions</div>
+        <div class="stat-context">Top competitor signal</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">{{FOURTH_STAT_NUM}}</div>
+        <div class="stat-label">{{FOURTH_STAT_LABEL}}</div>
+        <div class="stat-context">{{FOURTH_STAT_CONTEXT}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: WHERE THE CONVO LIVES -->
+  <div class="section">
+    <div class="section-label">Section 2</div>
+    <h2>Where the conversation lives</h2>
+    <p>{{PLATFORMS_PARAGRAPH}}</p>
+
+    <div class="bars">
+      {{PLATFORM_BARS}}
+    </div>
+    <p style="font-size: 13px; color: var(--ink-3); margin-top: 12px;">{{TOP_CHANNELS_NOTE}}</p>
+  </div>
+
+  <!-- SECTION 3: COMPETITIVE SOV -->
+  <div class="section">
+    <div class="section-label">Section 3</div>
+    <h2>Competitive share of voice</h2>
+    <p>Of the {{BRAND_NAME}}-tracked signals in the last 30 days, this is how often each top competitor is also named in the same thread or post. This is a co-mention map, not a pure SOV figure - it measures who shows up next to {{BRAND_NAME}} in your customer's conversation.</p>
+
+    <div class="bars">
+      {{SOV_BARS}}
+      <div class="sov-note">
+        {{SOV_NOTE}}
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: INTENT CLASSIFICATION -->
+  <div class="section">
+    <div class="section-label">Section 4</div>
+    <h2>What people are actually saying</h2>
+    <p>Every mention falls into one of six intent buckets. This tells you what the conversation is for, not just that the conversation is happening. The grid below shows counts from the 120-signal sample analyzed, sentiment posture per bucket, and the most representative threads in each.</p>
+
+    <div class="intent-grid">
+      {{INTENT_GRID}}
+    </div>
+    <p style="font-size: 13px; color: var(--ink-3); margin-top: 16px;">{{INTENT_REMAINDER_NOTE}}</p>
+  </div>
+
+  <!-- SECTION 5: ACTION LIST -->
+  <div class="section">
+    <div class="section-label">Section 5</div>
+    <h2>The Monday list - threads to engage with this week</h2>
+    <p>Direct buying-intent and churn-signal threads where {{BRAND_NAME}} either isn't named yet or has been mentioned without a response. These are the highest leverage threads from the report period.</p>
+
+    {{ACTION_ITEMS}}
+  </div>
+
+  {{BRAND_EVENT_SECTION}}
+
+  <!-- SECTION 7: METHODOLOGY -->
+  <div class="section">
+    <div class="section-label">Methodology</div>
+    <h2>How this report was built</h2>
+
+    <div class="method-box">
+
+      <h3>Data source</h3>
+      <p>Every figure in this report is sourced from Sensorhub MCP data for the {{BRAND_NAME}} project (project ID {{PROJECT_ID_SHORT}}). No web search, no scraping, no third-party APIs. If something could not be answered from Sensorhub data, it was excluded rather than estimated.</p>
+
+      <h3>Period and sample</h3>
+      <p>{{PERIOD_START}} to {{PERIOD_END}}. {{TOTAL_MENTIONS}} total signals tracked in the project across Reddit, LinkedIn, and X. The intent classification, action list, and event analysis pages use a top-scored sample of up to 120 signals (40 per platform) for human reviewability. The SOV co-mention counts use the full project corpus via search queries.</p>
+
+      <h3>Mention classification</h3>
+      <p>Each signal is bucketed into one of six intent categories: buying intent (category), comparison, pricing complaint, churn / displacement, win / testimonial, and feature / product feedback. The classifier reads the signal title and snippet and assigns the most direct match. Signals that do not fit any bucket are tagged as general industry mention and not counted in the intent grid.</p>
+
+      <h3>Sentiment</h3>
+      <p>The Sensorhub MCP returns a relevance score (commercial signal strength), not a sentiment score. Sentiment posture per bucket in this report is derived from signal text at analysis time, not from the underlying data feed. This is a directional read, not a calibrated score.</p>
+
+      <h3>SOV co-mentions</h3>
+      <p>For each top competitor, the report counts signals in the {{BRAND_NAME}} project that also reference the competitor by name. This is a co-mention map (who else shows up next to your brand in the same thread), not a pure share of voice (which would compare absolute mention volumes across separate brand projects). Search queries are capped at 50 results per competitor, so any competitor at exactly 50 is undercounted.</p>
+
+      <h3>What this report doesn't cover</h3>
+      <p>AI citation visibility (how often the brand is cited inside ChatGPT, Gemini, Perplexity). Sentiment trend lines week-over-week (needs longer history). Author reach scoring per mention. These are on the Sensorhub roadmap and will be added to the skill once the underlying data is available.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>Want this report running every week?</h2>
+    <p>This was a one-shot snapshot. Set up weekly tracking in your Sensorhub dashboard and get fresh action lists every Monday.</p>
+    <a href="https://sensorhub.ai" class="cta-btn">Go to my Sensorhub dashboard</a>
+  </div>
+
+  <div class="footer">
+    Generated by the Sensorhub brand-mentions skill. All data sourced exclusively from Sensorhub MCP. Report run on {{REPORT_DATE}}.
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "sensorhub-tools",
+  "version": "1.0.0",
+  "description": "Reports built from your Sensorhub data: Reddit Fit Score, Reddit share of voice, brand mentions and signal analysis",
+  "author": {
+    "name": "Sensorhub"
+  }
+}

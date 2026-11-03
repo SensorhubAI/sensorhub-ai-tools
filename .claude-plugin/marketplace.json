@@ -1,0 +1,14 @@
+{
+  "name": "sensorhub-ai-tools",
+  "description": "Free AI tools from Sensorhub, packaged as Claude skills",
+  "owner": {
+    "name": "Sensorhub"
+  },
+  "plugins": [
+    {
+      "name": "sensorhub-tools",
+      "source": "./plugin",
+      "description": "Reports built from your Sensorhub data: Reddit Fit Score, Reddit share of voice, brand mentions and signal analysis"
+    }
+  ]
+}
