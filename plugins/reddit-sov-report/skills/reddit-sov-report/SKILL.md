@@ -2,8 +2,8 @@
 name: reddit-sov-report
 description: >
   Generate a Reddit Share of Voice (SOV) + AEO report for any company using Sensorhub
-  signal data. Produces TWO outputs: a professional .docx Word document AND a
-  standalone .html visual report with the same data. Trigger whenever the user asks
+  signal data. Produces TWO outputs: a standalone .html report and a print-ready
+  .pdf made from it. Trigger whenever the user asks
   for a "Reddit SOV report", "share of voice report", "Reddit SOV for [company]",
   "AEO Reddit report", "social SOV report", or any variation asking to analyze a
   company's Reddit presence, competitive visibility, or LLM citation risk on Reddit.
@@ -16,8 +16,8 @@ description: >
 
 Generates a Reddit Share of Voice + AEO/LLM citation analysis report for any company.
 The user provides only ONE input: a company name. The skill produces two output files:
-1. A `.docx` Word document (professional, shareable)
-2. A `.html` visual report (interactive, designed for Sensorhub UI or browser use)
+1. A `.html` report (self-contained, opens in any browser, in the Sensorhub report style)
+2. A `.pdf` made from the same HTML (print-ready, easy to forward)
 
 ---
 
@@ -27,8 +27,8 @@ The user provides only ONE input: a company name. The skill produces two output 
 2. Pull project intel (competitors, tracked subreddits, positioning)
 3. Search Reddit signals - brand mentions, competitors, category keywords
 4. Analyze SOV, AEO gaps, conversation themes, subreddit coverage
-5. Generate the `.docx` report
-6. Generate the `.html` visual report
+5. Generate the `.html` report
+6. Make the `.pdf` from it
 7. Present both files to the user
 
 ---
@@ -108,130 +108,80 @@ Note if they are organic vs founder-authored vs third-party.
 
 ---
 
-## Step 5: Generate the .docx
+## Step 5: Generate the .html
 
-If a docx skill is available, read it for formatting rules.
-Install docx if needed: `npm install -g docx`
+One self-contained file. No external JS; the only external load is Inter from Google Fonts.
 
-### Document structure
+### Styles
 
-1. Title page (company name, date, "Powered by Sensorhub.ai", signal count)
-2. Executive Summary (5-7 sharp bullets with real data points)
-3. Brand SOV Snapshot (table: brand, est. SOV%, Reddit presence, dominant conversation type)
-4. Subreddit Coverage Map (Tier 1 table, Tier 2 prose, coverage gap callout)
-5. Conversation Theme Analysis (5 themes with volume labels)
-6. Competitor Deep-Dive (one section per top competitor)
-7. AEO / LLM Citation Analysis (table of high-risk + gap threads, callout)
-8. Brand Signals - Direct Mentions (table of all found signals)
-9. SOV Composite Score (scoring table with stars)
-10. Strategic Implications (3 sub-sections: positioning, product, content)
+Read `assets/report.css` and paste it whole into the report's `<style>`, after this in `<head>`:
 
-### Formatting rules (from docx skill)
-- US Letter (12240 x 15840 DXA), 1-inch margins
-- Arial font, Heading1 blue (#1F4E79), Heading2 blue (#2E75B6)
-- Use `LevelFormat.BULLET` - never unicode bullets
-- Tables: `WidthType.DXA` always, dual widths (columnWidths + cell width)
-- `ShadingType.CLEAR` for table shading, never SOLID
-- Page numbers in footer with tab stops
-- Callout boxes as single-cell tables with colored fills
-- Single dashes (-) not em dashes throughout
-
-Save as `[company-slug]-reddit-sov-report.docx` in the current working folder (or the
-outputs folder if your environment has one).
-
----
-
-## Step 6: Generate the .html
-
-Create a standalone, self-contained HTML file. Light theme (white background).
-No external dependencies except Google Fonts.
-
-### Design system
-
-```css
-fonts: DM Mono (monospace/labels) + Instrument Serif (display title) + Geist (body)
-Google Fonts import: DM Mono:ital,wght@0,300;0,400;0,500 + Instrument+Serif:ital@0;1 + Geist:wght@300;400;500
-
-background: #f9f8f6 (page), #ffffff (cards), #f4f3f0 (inset/track)
-borders: rgba(0,0,0,0.07) default, rgba(0,0,0,0.13) accent
-text: #16140f primary, #6b6760 secondary, #a09c96 muted
-accent blue: #2255e0 (links, fills, callout borders)
-red: #c53030 / dim: rgba(197,48,48,0.07)
-amber: #a05e00 / dim: rgba(160,94,0,0.07)
-green: #1a6b42 / dim: rgba(26,107,66,0.07)
+```html
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 ```
+
+Build every part from its classes; don't add colours, fonts, radii or shadows of your own. Format
+every number (1,284, never 1284). Label SOV percentages as directional.
 
 ### Page structure (in order)
 
-1. **Header** - Sensorhub logo mark + wordmark, serif report title, mono metadata row
-   (company / category / date), signal count in large mono on the right
+1. **Header** - `<header class="rp-header">` with the `rp-meta` row (`<span class="rp-brand"><i></i>Sensorhub</span>`,
+   "Reddit share of voice", company, category, date, "N signals"), an `<h1>` that states the main finding
+   in plain words (e.g. "Acme is mentioned in 4% of Reddit's CRM conversations"), and a one-line `lede`.
+2. **Metric strip** - `stat-grid` of four `stat` cards: company SOV score, direct brand signals,
+   subreddits tracked, SOV leader.
+3. **Executive summary** - a `card` with 5-7 bullets, each with a real data point.
+4. **Share of voice** - a `card` of `bar-row`s, largest first. The company's fill is `bar-fill is-own`
+   (indigo, label in bold). Competitors take `c1`, `c2`, ... `c8` in the project's competitor order, so
+   each keeps its colour. Small or niche brands share one plain `bar-fill` row ("Other"). A `callout`
+   below explains how SOV was scored.
+5. **Brand SOV snapshot** - a `table` with brand, est. SOV %, Reddit presence and dominant conversation type.
+6. **Top signals and themes** - `grid-2`: on the left a `card` of `thread` rows (title linked, `score` pill
+   `s85`/`s75`/`s65`/`slow` by relevance, `thread-meta` with the subreddit); on the right the conversation
+   themes, each with a `pill` for its volume (high, medium, low).
+7. **AEO and LLM citations** - `grid-3` of `card`s. High citation risk threads carry a `pill negative`
+   ("High citation risk"); AEO gaps carry a `pill info` ("Gap"). A `callout` below says what to do.
+8. **Subreddit coverage** - a `table` of Tier 1 subreddits with category and presence (`pill positive`
+   Present, `pill watch` Minimal, `pill` Absent), Tier 2 in a sentence, and a `callout watch` for the
+   biggest coverage gap.
+9. **Competitor deep-dive** - `grid-2` of `card`s, one per top competitor: where they win, the threads,
+   the opening for the company.
+10. **Brand signals** - a `card` of `thread` rows for every direct mention, with a sentiment `pill`
+    (`positive`, plain for neutral, `negative`). Use `callout negative` if every mention is founder-authored.
+11. **Composite score** - a `card` of `bar-row`s, one per scoring axis, fill `strong`/`mid`/`low`, with
+    the composite in the heading.
+12. **Strategic implications** - `grid-3` of `strat-card`s: positioning, product, content.
+13. **Footer** - `footer`: "Generated by sensorhub.ai · Signal pool: N · Reddit focus · [date] · [company]".
 
-2. **Metric strip** - 4-cell grid (no gaps between cells, separated by 1px border):
-   - Company SOV score / Direct brand signals / Subreddits tracked / SOV leader
+Motion: bars grow once on load (built into the styles) and stop for reduced motion. No fade-up on sections.
 
-3. **SOV bars section** - Full-width card with horizontal bar chart per competitor.
-   Each row: brand name (140px) | track bar | % | score pill badge.
-   Bars animate in via CSS (`animation: fillBar`). The target company is highlighted
-   at bottom with red color. Callout box below explaining scoring methodology.
+Save as `[company-slug]-reddit-sov-report.html` in the current working folder (or the outputs folder
+if your environment has one).
 
-4. **Two-column row** - Top signals list (left, 1.5fr) + Conversation themes (right, 1fr)
+---
 
-5. **AEO section** - 3-col grid of cards. First 3 = high citation risk (red risk label).
-   Last 3 = AEO gaps (blue label, blue border accent). Callout below.
+## Step 6: Make the PDF
 
-6. **Subreddit coverage map** - 3-col grid of sub-cards. Each: subreddit name (mono),
-   category label (colored), presence indicator (colored dot + text).
-   Legend below (present / minimal / absent).
+Convert the HTML to PDF with weasyprint. Install it if needed (one-time):
 
-7. **Brand signals** - Full-width card with signal rows. Each row: score ring (colored
-   circle, ring-hot/ring-high/ring-trust) | title | meta (subreddit + note + sentiment).
-   Danger callout box below if all mentions are founder-authored.
-
-8. **Strategic implications** - 3-col grid of strat cards with icon, mono title, body text.
-
-9. **Footer** - "Generated by sensorhub.ai · Signal pool: N · Reddit focus · [date] · [company]"
-
-### CSS patterns
-
-```css
-/* Subtle grid texture on body */
-body::before {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-/* SOV bar animation */
-@keyframes fillBar { from { width: 0 !important; } }
-.sov-fill { animation: fillBar 1.2s cubic-bezier(0.4,0,0.2,1) both; animation-delay: 0.4s; }
-
-/* Page load stagger */
-@keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-.animate-in { animation: fadeUp 0.5s ease both; }
-.a1 { animation-delay: 0.05s; } /* through .a8 at 0.05s increments */
-
-/* Score ring colors */
-.ring-hot { background: var(--red-dim); color: var(--red); border: 1px solid rgba(197,48,48,0.3); }
-.ring-high { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(160,94,0,0.3); }
-.ring-trust { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
-
-/* Callout box */
-.callout { border-left: 2px solid var(--accent); padding: 12px 16px; background: var(--accent-dim); border-radius: 0 8px 8px 0; }
-.callout.danger { border-left-color: var(--red); background: var(--red-dim); }
+```bash
+pip install --break-system-packages weasyprint
 ```
 
-### SOV bar colors (light theme - dark enough to read on white)
-- #1 brand (largest): #2255e0
-- #2: #4a7aee
-- #3: #a05e00
-- #4: #c47a10
-- #5: #1a6b42
-- #6: #2e9e6a
-- Other/niche: #c5c2bc
-- Target company: var(--red) or #c53030
+Then, replacing `<company-slug>`:
 
-Save as `[company-slug]-reddit-sov-report.html` next to the .docx.
+```bash
+cd <folder with the HTML> && python3 -c "
+from weasyprint import HTML, CSS
+print_css = CSS(string='''
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  body { background: white !important; }
+  .container { padding: 0 !important; max-width: 100% !important; }
+  .bar-fill { animation: none !important; }
+''')
+HTML('<company-slug>-reddit-sov-report.html').write_pdf('<company-slug>-reddit-sov-report.pdf', stylesheets=[print_css])
+"
+```
 
 ---
 
@@ -261,5 +211,5 @@ N direct brand mentions, N AEO gap threads identified").
 - Single dashes (-) throughout, no em dashes
 - Every claim traces back to a real signal or web source - no unsourced assertions
 - SOV % estimates are always labeled "directional" - not precise
-- The html file is fully self-contained (no external JS, only Google Fonts CDN)
+- The HTML file is fully self-contained (no external JS, only Google Fonts CDN), and the PDF is made from it
 - Company slug for filenames: lowercase, spaces replaced with hyphens (e.g., "Acme Corp" → "acme-corp")

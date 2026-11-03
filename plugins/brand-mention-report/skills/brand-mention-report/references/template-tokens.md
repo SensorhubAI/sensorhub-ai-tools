@@ -93,25 +93,32 @@ all platforms are at 40, set all widths to 100%.
 ## SOV bars (HTML chunk)
 
 `{{SOV_BARS}}` expects one `<div class="bar-row">` per competitor, plus one
-for the brand itself at the top. The brand row uses `class="bar-fill sov-bar brand"`
-and the competitors use `class="bar-fill sov-bar"`.
+for the brand itself at the top. The brand row's fill uses `class="bar-fill is-own"`
+(Sensorhub indigo). Each competitor gets the next colour in the fixed order:
+`c1` for the first competitor, `c2` for the second, up to `c8`, so a competitor
+keeps the same colour wherever it appears.
 
 ```html
 <div class="bar-row">
   <div class="bar-label">BrandName</div>
-  <div class="bar-track"><div class="bar-fill sov-bar brand" style="width: 100%;"></div></div>
+  <div class="bar-track"><div class="bar-fill is-own" style="width: 100%;"></div></div>
   <div class="bar-value">1,595</div>
 </div>
 <div class="bar-row">
   <div class="bar-label">Ahrefs</div>
-  <div class="bar-track"><div class="bar-fill sov-bar" style="width: 100%;"></div></div>
+  <div class="bar-track"><div class="bar-fill c1" style="width: 100%;"></div></div>
   <div class="bar-value">50+</div>
+</div>
+<div class="bar-row">
+  <div class="bar-label">Moz</div>
+  <div class="bar-track"><div class="bar-fill c2" style="width: 62%;"></div></div>
+  <div class="bar-value">31</div>
 </div>
 ```
 
 Width is relative to the highest competitor count, not to the brand count
 (otherwise competitor bars would all be tiny). Use the highest competitor as
-the 100% reference.
+the 100% reference. Numbers are always formatted (1,595, never 1595).
 
 ---
 

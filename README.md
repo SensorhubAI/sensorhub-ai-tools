@@ -5,9 +5,9 @@ Free Claude skills that turn your Sensorhub data into reports you can read, shar
 | Tool | What you get |
 | --- | --- |
 | `reddit-fit-score` | An A-F grade for how well Reddit fits as a channel for the company, with a six-part score breakdown, the top communities and live threads. One HTML file. |
-| `reddit-sov-report` | Reddit share of voice against competitors, which subreddits matter, and the threads AI answers are likely to cite. A Word document and an HTML report. |
+| `reddit-sov-report` | Reddit share of voice against competitors, which subreddits matter, and the threads AI answers are likely to cite. An HTML report and a PDF. |
 | `brand-mention-report` | How the brand is discussed across Reddit, LinkedIn and X in the last 30 days, sorted by intent, with a list of threads worth replying to. An HTML file and a PDF. |
-| `signal-analysis-report` | A full competitive intel report: who the buyers are, where competitors lose them, and the 10 conversations worth joining first. A Word document. |
+| `signal-analysis-report` | A full competitive intel report: who the buyers are, where competitors lose them, and the 10 conversations worth joining first. An HTML report and a PDF. |
 
 ## Before you start
 
@@ -59,7 +59,7 @@ Ask in plain words, for example:
 
 Or pick a tool from the `/` menu, such as `/reddit-fit-score:reddit-fit-score`.
 
-The Word reports need Claude's docx skill or the `docx` npm package. The brand mentions PDF needs `weasyprint`. Claude installs these when it can.
+The PDFs need `weasyprint`. Claude installs it when it can. Every report uses the same Sensorhub report style, so they look alike and match the app.
 
 ## How the numbers work
 
