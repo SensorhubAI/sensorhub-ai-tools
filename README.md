@@ -39,6 +39,15 @@ Then install any of the tools:
 
 Go to Customize > Plugins > Add > Add marketplace > Add from a repository and enter `SensorhubAI/sensorhub-ai-tools`. Then install the tools you want from the list.
 
+**Or download a single tool**
+
+- [reddit-fit-score.skill](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/reddit-fit-score.skill)
+- [reddit-sov-report.skill](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/reddit-sov-report.skill)
+- [brand-mention-report.skill](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/brand-mention-report.skill)
+- [signal-analysis-report.skill](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/signal-analysis-report.skill)
+
+In Claude.ai, upload the file under Customize > Skills > Add > Upload skill. In Claude Code, unzip it into `~/.claude/skills/`. A downloaded file doesn't update by itself, so download it again when a new version comes out.
+
 ## Use
 
 Ask in plain words, for example:
