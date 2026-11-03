@@ -1,0 +1,8 @@
+{
+  "name": "brand-mention-report",
+  "version": "1.0.0",
+  "description": "How a brand is discussed across Reddit, LinkedIn and X, sorted by intent, with threads worth replying to",
+  "author": {
+    "name": "Sensorhub"
+  }
+}

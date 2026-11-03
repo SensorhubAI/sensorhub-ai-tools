@@ -1,0 +1,8 @@
+{
+  "name": "reddit-fit-score",
+  "version": "1.0.0",
+  "description": "Grades a company A-F on how well Reddit fits as a channel, from its Sensorhub data",
+  "author": {
+    "name": "Sensorhub"
+  }
+}

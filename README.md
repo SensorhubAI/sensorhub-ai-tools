@@ -16,16 +16,28 @@ Free Claude skills that turn your Sensorhub data into reports you can read, shar
 
 ## Install
 
+Each tool is its own plugin, so install only the ones you want.
+
 **Claude Code**
+
+Add this repo once:
 
 ```
 /plugin marketplace add SensorhubAI/sensorhub-ai-tools
-/plugin install sensorhub-tools@sensorhub-ai-tools
+```
+
+Then install any of the tools:
+
+```
+/plugin install reddit-fit-score@sensorhub-ai-tools
+/plugin install reddit-sov-report@sensorhub-ai-tools
+/plugin install brand-mention-report@sensorhub-ai-tools
+/plugin install signal-analysis-report@sensorhub-ai-tools
 ```
 
 **Claude.ai and Claude desktop**
 
-Go to Customize > Plugins > Add > Add marketplace > Add from a repository, enter `SensorhubAI/sensorhub-ai-tools`, then install `sensorhub-tools`.
+Go to Customize > Plugins > Add > Add marketplace > Add from a repository and enter `SensorhubAI/sensorhub-ai-tools`. Then install the tools you want from the list.
 
 ## Use
 
@@ -36,7 +48,7 @@ Ask in plain words, for example:
 - "Reddit share of voice report for Acme"
 - "Signal analysis report for Acme"
 
-Or pick a tool from the `/` menu, such as `/sensorhub-tools:reddit-fit-score`.
+Or pick a tool from the `/` menu, such as `/reddit-fit-score:reddit-fit-score`.
 
 The Word reports need Claude's docx skill or the `docx` npm package. The brand mentions PDF needs `weasyprint`. Claude installs these when it can.
 

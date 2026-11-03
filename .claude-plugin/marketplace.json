@@ -6,9 +6,24 @@
   },
   "plugins": [
     {
-      "name": "sensorhub-tools",
-      "source": "./plugin",
-      "description": "Reports built from your Sensorhub data: Reddit Fit Score, Reddit share of voice, brand mentions and signal analysis"
+      "name": "reddit-fit-score",
+      "source": "./plugins/reddit-fit-score",
+      "description": "Grades a company A-F on how well Reddit fits as a channel, from its Sensorhub data"
+    },
+    {
+      "name": "reddit-sov-report",
+      "source": "./plugins/reddit-sov-report",
+      "description": "Reddit share of voice against competitors, with subreddit coverage and AI citation gaps"
+    },
+    {
+      "name": "brand-mention-report",
+      "source": "./plugins/brand-mention-report",
+      "description": "How a brand is discussed across Reddit, LinkedIn and X, sorted by intent, with threads worth replying to"
+    },
+    {
+      "name": "signal-analysis-report",
+      "source": "./plugins/signal-analysis-report",
+      "description": "Competitive intel report: buyers, competitor drop-off and the conversations worth joining first"
     }
   ]
 }
