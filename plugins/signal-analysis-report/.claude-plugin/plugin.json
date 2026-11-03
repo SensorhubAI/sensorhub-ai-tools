@@ -1,6 +1,7 @@
 {
   "name": "signal-analysis-report",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "Competitive intel report: buyers, competitor drop-off and the conversations worth joining first",
   "author": {
     "name": "Sensorhub"

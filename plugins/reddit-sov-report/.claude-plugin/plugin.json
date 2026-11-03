@@ -1,6 +1,7 @@
 {
   "name": "reddit-sov-report",
   "version": "1.0.0",
+  "license": "MIT",
   "description": "Reddit share of voice against competitors, with subreddit coverage and AI citation gaps",
   "author": {
     "name": "Sensorhub"
