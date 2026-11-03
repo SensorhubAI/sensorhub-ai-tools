@@ -132,43 +132,44 @@ reader to complete - never scored, never auto-run, never web-searched.
 
 ## Step 8: Render the .html report
 
-Single self-contained file. No external JS. Only the Google Fonts CDN (Inter). Match the
-Sensorhub brand exactly - all sans-serif, no serif or monospace display fonts.
+Single self-contained file. No external JS. Only the Google Fonts CDN (Inter). It uses the
+Sensorhub report styles, so it looks like the other Sensorhub reports and the app.
 
-### Design tokens (Sensorhub brand)
+### Styles
 
-```css
-:root{
-  --page:#f8fafc; --card:#ffffff; --inset:#f1f5f9;
-  --bd:#e2e8f0; --bd2:#cbd5e1;
-  --tx:#1e293b; --tx2:#64748b; --tx3:#94a3b8; --navy:#0f172a;
-  --accent:#6366f1; --accent-dim:rgba(99,102,241,0.08); --accent-bd:rgba(99,102,241,0.28);
-  --sky:#e0f2fe; --sky-tx:#075985;
-  --green:#16a34a; --green-dim:rgba(22,163,74,0.09);
-  --amber:#d97706; --amber-dim:rgba(217,119,6,0.10);
-  --red:#dc2626; --red-dim:rgba(220,38,38,0.08);
-}
+Read `assets/report.css` and paste it whole into the report's `<style>`, after this in `<head>`:
+
+```html
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 ```
 
-- Font: `Inter` (weights 400/500/600/700) for everything. Body text `--tx`, headings
-  `--navy` 700, secondary `--tx2`, muted `--tx3`. Use `font-variant-numeric:tabular-nums`
-  on all figures.
-- Cards: white, `1px solid --bd`, radius 12-14px, shadow `0 1px 2px rgba(15,23,42,0.04)`.
-- Bars: `--green` for strong axes (>=75), `--amber` for mid (40-74), `--tx3` for low (<40);
-  the indigo `--accent` is for callout borders, the brand dot, and B-grade legend.
-- Grade colors stay semantic: A `--green`, B `--accent`, C `--amber`, D `--tx2`, F `--red`.
-  The grade hero tints its background with the matching `*-dim`.
-- Competitor-owned subreddit chips use the `--sky` background with `--sky-tx` text.
-- Animations: a `fadeUp` stagger on sections (`.d1`-`.d9`, 0.05s steps) and a `fillBar`
-  keyframe so bars grow from 0 on load. Keep them subtle.
+Build every part from its classes; don't add colours, fonts, radii or shadows of your own.
+
+- **Header:** `<header class="rp-header">` with the `rp-meta` row (`<span class="rp-brand"><i></i>Sensorhub</span>`,
+  company, category, "Last 90 days", date), then `<h1>` and a one-line `lede`.
+- **Grade hero:** `grade-hero` with `grade-letter` plus the grade class (`grade-a` green, `grade-b` indigo,
+  `grade-c` amber, `grade-d` slate, `grade-f` rose) and `grade-score` ("NN / 100"); the verdict on the right.
+  The "On the A/B line" chip is a `pill watch`.
+- **Metric strip:** `stat-grid` of four `stat` cards (`stat-num`, `stat-label`, `stat-context`). Format every
+  number (1,284, never 1284).
+- **Score breakdown:** a `card` of `bar-row`s; the fill is `bar-fill strong` (75 and up), `mid` (40 to 74) or
+  `low` (under 40), with the evidence sentence in a `note` under each row.
+- **Caveat:** `callout watch`. **Disqualifier:** `callout` when clear, `callout watch` when it caps the grade.
+- **Manual checks:** two `check-card`s (dashed), each with a `pill info` reading "Verify".
+- **Top communities:** `chips` of `chip`s with the count in `<b>`; competitor-owned subreddits add `is-competitor`.
+- **Live threads:** a `card` of `thread` rows: `thread-title` (linked), a `score` pill (`s85`, `s75`, `s65` or
+  `slow` by relevance), and `thread-meta` with the subreddit and engagement.
+- **Methodology:** `method-box`. **Footer:** `footer`.
+
+Motion: bars grow once on load (built into the styles) and stop for reduced motion. No fade-up on sections.
 
 ### Section order
 
-1. **Header** - brand dot + "SENSORHUB" wordmark, `Reddit Fit Score` H1, meta row
+1. **Header** - Sensorhub brand dot and name, `Reddit Fit Score` H1, meta row
    (company / category / window "Last 90 days" / date).
 2. **Grade hero** - 2-col card: left = big letter + `NN / 100` + an "On the A/B line"
    chip only when the composite is within 2 points of a band edge; right = verdict
-   (uppercase kicker + 1-2 sentences).
+   (a short sentence-case kicker + 1-2 sentences).
 3. **Metric strip** - 4 cells: high-relevance threads/90d, distinct subreddits,
    competitors tracked & named, and one standout figure (e.g. threads naming the top
    competitor).
@@ -178,7 +179,7 @@ Sensorhub brand exactly - all sans-serif, no serif or monospace display fonts.
    excluded and that the score ignores it.
 6. **Manual checks** - two dashed cards ("Can you actually participate?" with the real
    top subreddits named; "Do these threads rank in AI answers?") each with a "verify" chip.
-7. **Two-column** - top communities (chips with counts, competitor subs in sky) + the
+7. **Two-column** - top communities (chips with counts, competitor-owned subs marked `is-competitor`) + the
    disqualifier check (green "Clear" or amber capped warning).
 8. **Live threads** - 5-6 real threads: title, subreddit, relevancy %, and engagement
    (upvotes/comments) or an intent tag.

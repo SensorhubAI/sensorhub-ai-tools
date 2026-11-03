@@ -221,8 +221,9 @@ print_css = CSS(string='''
   @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
   body { background: white !important; }
   .container { padding: 0 !important; max-width: 100% !important; }
+  .bar-fill { animation: none !important; }
   .cta, .intent-card, .action-item, .event-card, .stat-grid { page-break-inside: avoid; }
-  a { color: #1f6e5e !important; }
+  a { color: #4F46E5 !important; }
 ''')
 HTML('<brand-slug>-brand-mentions-report.html').write_pdf(
   '<brand-slug>-brand-mentions-report.pdf', stylesheets=[print_css]
