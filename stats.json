@@ -1,0 +1,10 @@
+{
+  "window": "30d",
+  "asOf": "2026-11-06T18:15:57Z",
+  "analyzed": 1882558,
+  "signals": 154088,
+  "envs": {
+    "prod": { "analyzed": 323775, "signals": 63650, "socialPosts": 322201 },
+    "alpha": { "analyzed": 1701069, "signals": 90438, "socialPosts": 836978, "overlapDeduction": 142286 }
+  }
+}
