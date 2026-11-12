@@ -24,6 +24,11 @@
       "name": "signal-analysis-report",
       "source": "./plugins/signal-analysis-report",
       "description": "Competitive intel report: buyers, competitor drop-off and the conversations worth joining first"
+    },
+    {
+      "name": "reddit-rulebook",
+      "source": "./plugins/reddit-rulebook",
+      "description": "Checks a Reddit draft against the subreddit's rules and 45 mistakes that get marketers removed or banned, then rewrites it"
     }
   ]
 }

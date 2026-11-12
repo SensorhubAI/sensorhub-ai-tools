@@ -1,0 +1,9 @@
+{
+  "name": "reddit-rulebook",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "Checks a Reddit post or comment against the subreddit's own rules and 45 mistakes that get marketers removed or banned, then rewrites it",
+  "author": {
+    "name": "Sensorhub"
+  }
+}
