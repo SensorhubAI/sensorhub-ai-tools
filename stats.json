@@ -1,19 +1,19 @@
 {
   "window": "30d",
-  "asOf": "2026-11-18T04:04:54Z",
-  "analyzed": 2448627,
-  "signals": 176668,
+  "asOf": "2026-11-20T04:04:41Z",
+  "analyzed": 2430029,
+  "signals": 177710,
   "envs": {
     "prod": {
-      "analyzed": 1152594,
-      "signals": 105338,
-      "socialPosts": 794019
+      "analyzed": 1215178,
+      "signals": 111126,
+      "socialPosts": 830653
     },
     "alpha": {
-      "analyzed": 1426327,
-      "signals": 71330,
-      "socialPosts": 766434,
-      "overlapDeduction": 130294
+      "analyzed": 1338111,
+      "signals": 66584,
+      "socialPosts": 725059,
+      "overlapDeduction": 123260
     }
   }
 }
