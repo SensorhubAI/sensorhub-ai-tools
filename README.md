@@ -9,6 +9,7 @@ Free Claude skills that turn your Sensorhub data into reports you can read, shar
 | `brand-mention-report` | How the brand is discussed across Reddit, LinkedIn and X in the last 30 days, sorted by intent, with a list of threads worth replying to. An HTML file and a PDF. |
 | `signal-analysis-report` | A full competitive intel report: who the buyers are, where competitors lose them, and the 10 conversations worth joining first. An HTML report and a PDF. |
 | `reddit-rulebook` | A Reddit draft checker. Paste a post or comment and the subreddit's rules, and get a verdict, the lines that break a rule, and a rewrite. Needs no Sensorhub account. |
+| `reddit-marketing-guide` | The complete [Reddit Marketing Guide](https://www.sensorhub.ai/blog/reddit-marketing) as a reference for your assistant: an overview, 8 chapters, 75 statistics with sources and a map of 66 B2B subreddits. Ask it to plan a warm-up, check a draft, pick subreddits or build a client pitch. Needs no Sensorhub account. Also as one Markdown file and a PDF ebook. |
 
 ## Before you start
 
@@ -35,6 +36,7 @@ Then install any of the tools:
 /plugin install brand-mention-report@sensorhub-ai-tools
 /plugin install signal-analysis-report@sensorhub-ai-tools
 /plugin install reddit-rulebook@sensorhub-ai-tools
+/plugin install reddit-marketing-guide@sensorhub-ai-tools
 ```
 
 **Claude.ai and Claude desktop**
@@ -48,6 +50,12 @@ Go to Customize > Plugins > Add > Add marketplace > Add from a repository and en
 - [brand-mention-report.skill](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/brand-mention-report.skill)
 - [signal-analysis-report.skill](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/signal-analysis-report.skill)
 - [reddit-rulebook.skill](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/reddit-rulebook.skill)
+- [reddit-marketing-guide.skill](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/reddit-marketing-guide.skill)
+
+The Reddit Marketing Guide also comes as plain files, for ChatGPT or any other assistant and for reading:
+
+- [reddit-marketing-guide.md](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/reddit-marketing-guide.md): the whole guide in one Markdown file. Upload it to a chat or a project and ask your questions.
+- [reddit-marketing-guide.pdf](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/reddit-marketing-guide.pdf): the same guide as a 179-page ebook.
 
 In Claude.ai, upload the file under Customize > Skills > Add > Upload skill. In Claude Code, unzip it into `~/.claude/skills/`. A downloaded file doesn't update by itself, so download it again when a new version comes out.
 
@@ -60,6 +68,7 @@ Ask in plain words, for example:
 - "Reddit share of voice report for Acme"
 - "Signal analysis report for Acme"
 - "Check this Reddit comment before I post it in r/SaaS" (the rulebook needs no company name, only your draft)
+- "Using the Reddit Marketing Guide, give me a week-by-week plan to warm up a new Reddit account"
 
 Or pick a tool from the `/` menu, such as `/reddit-fit-score:reddit-fit-score`.
 

@@ -1,0 +1,9 @@
+{
+  "name": "reddit-marketing-guide",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "The complete Reddit Marketing Guide as a reference for Claude: 8 chapters, 75 statistics with sources and a map of 66 B2B subreddits, for planning, checking drafts and pitching Reddit to clients",
+  "author": {
+    "name": "Sensorhub"
+  }
+}
