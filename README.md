@@ -55,7 +55,7 @@ Go to Customize > Plugins > Add > Add marketplace > Add from a repository and en
 The Reddit Marketing Guide also comes as plain files, for ChatGPT or any other assistant and for reading:
 
 - [reddit-marketing-guide.md](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/reddit-marketing-guide.md): the whole guide in one Markdown file. Upload it to a chat or a project and ask your questions.
-- [reddit-marketing-guide.pdf](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/reddit-marketing-guide.pdf): the same guide as a 179-page ebook.
+- [reddit-marketing-guide.pdf](https://github.com/SensorhubAI/sensorhub-ai-tools/releases/latest/download/reddit-marketing-guide.pdf): the same guide as a 188-page ebook.
 
 In Claude.ai, upload the file under Customize > Skills > Add > Upload skill. In Claude Code, unzip it into `~/.claude/skills/`. A downloaded file doesn't update by itself, so download it again when a new version comes out.
 
